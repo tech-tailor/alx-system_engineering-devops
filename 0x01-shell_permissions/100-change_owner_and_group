@@ -1,0 +1,4 @@
+ble File  2 lines (2 sloc)  34 Bytes
+
+#!/bin/bash
+chown vincent:staff *
