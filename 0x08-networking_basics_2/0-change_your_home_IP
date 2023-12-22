@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+#configure ubuntu server
+echo -e "localhost\t127.0.0.2\nfacebook.com\t8.8.8.8" > /etc/hosts
