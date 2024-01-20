@@ -1,14 +1,3 @@
 #!/usr/bin/env bash
-
 # connect to my server using ssh
-
-# set the server ip
-ip_addr =52.0.125.236
-
-# private key path
-private_key="~/.ssh/school"
-
-ssh_user="ubuntu"
-
-# ssh command
-ssh -i "$private_key" "$ssh_user"@"$ip_addr"
+ssh -i ~/.ssh/school ubuntu@52.0.125.236
