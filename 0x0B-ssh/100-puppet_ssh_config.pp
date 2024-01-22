@@ -1,13 +1,13 @@
 # ssh configuration file
 
 file{ 'ssh configuration':
-  path => '~/.ssh',
-  ensure => file,
+  ensure  => file,
+  path    => '~/.ssh',
   content => PasswordAuthentication no,
 }
 
 file { 'identity file':
-  ensure => file,
-  content => 'IdentityFile ~/.ssh/school'
-  path => '~/.ssh',
+  ensure  => file,
+  content => 'IdentityFile ~/.ssh/school',
+  path    => '~/.ssh',
 }
