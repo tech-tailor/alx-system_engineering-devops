@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+#  script that configures a new Ubuntu machine
+
+# upate the machine
+ apt-get -y update
+
+# install nginx
+ apt-get -y install nginx
+
+# write the config file
+cat <<EOF > /etc/nginx/sites-enabled/default
+
+server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+
+    root /var/www/html;
+    index index.html;
+
+    server_name _;
+
+    location / {
+        try_files \$uri \$uri/ =404;
+    }
+}
+EOF
+
+# write into the index.html
+echo "Hello World!" > /var/www/html/index.html
+
+# reload nginx
+nginx -s reload
