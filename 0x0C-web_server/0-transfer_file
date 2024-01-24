@@ -14,4 +14,4 @@ PATH_TO_SSH_KEY="$4"
 
 
 # use scp command
-scp -o StrictHostKeyChecking=no -i "$PATH_TO_SSH_KEY" "$PATH_TO_FILE" "$USERNAME@$IP:/home/ubuntu/" 
+scp -o StrictHostKeyChecking=no -i "$PATH_TO_SSH_KEY" "$PATH_TO_FILE" "$USERNAME@$IP":~/
