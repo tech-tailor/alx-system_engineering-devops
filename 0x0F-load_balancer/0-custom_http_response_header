@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+#nginx config
+
+apt-get -y update
+
+apt-get install -y nginx
+
+cp /etc/nginx/sites-enabled/default /etc/nginx/sites-enabled/default_backup
+sed -i '/listen 80 default_server;/s/^/\t#/' /etc/nginx/sites-enabled/default_backup
+sed -i '/listen \[::]:80 default_server;/s/^/\t#/' /etc/nginx/sites-enabled/default_backup
+sed -i '/server_name _;/s/^/\t#/' /etc/nginx/sites-enabled/default_backup
+
+mv /var/www/html/index.nginx-debian.html /var/www/html/index.nginx-debian.html.bak
+
+echo "Hello World" > /var/www/html/index.html
+echo "Ceci n'est pas une page" > /var/www/html/404.html
+
+sed -i '/error_page 404 \/404.html;/d; /server_name _;/a\\terror_page 404 \/404.html;' /etc/nginx/sites-enabled/default
+sed -i '/add_header X-Served-By $host;/d; /error_page 404 \/404.html;/a\\tadd_header X-Served-By $host;' /etc/nginx/sites-enabled/default
+
+nginx -s reload
