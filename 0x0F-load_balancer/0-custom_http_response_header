@@ -16,6 +16,6 @@ echo "Hello World" > /var/www/html/index.html
 echo "Ceci n'est pas une page" > /var/www/html/404.html
 
 sed -i '/error_page 404 \/404.html;/d; /server_name _;/a\\terror_page 404 \/404.html;' /etc/nginx/sites-enabled/default
-sed -i '/add_header X-Served-By $host;/d; /error_page 404 \/404.html;/a\\tadd_header X-Served-By $host;' /etc/nginx/sites-enabled/default
+sed -i '/add_header X-Served-By $host;/d; /error_page 404 \/404.html;/a\\tadd_header X-Served-By $hostname;' /etc/nginx/sites-enabled/default
 
 nginx -s reload
