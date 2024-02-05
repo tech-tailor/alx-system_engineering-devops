@@ -1,8 +1,35 @@
 #!/usr/bin/env bash
-# install and configure HAproxy on your lb-01 server
-apt-get -y update
-apt-get -y install haproxy=2.8\*
+# load balancer config
 
-sed -i "s/ENABLED=0/ENABLED=1/" /etc/default/haproxy
-echo -e "\nfrontend localnodes\n\tbind *:80\n\tmode http\n\tdefault_backend nodes\n\n\nbackend nodes\n\tbalance roundrobin\n\tserver 350-web-01 35.227.39.114:80 check\n\tserver 350-web-02 35.231.236.123:80 check\n" >> /etc/haproxy/haproxy.cfg
+apt-get -y install update
+apt-get -y install --no-install-recommends software-properties-common
+
+add-apt-repository -y ppa:vbernat/haproxy-2.8
+
+apt-get -y install haproxy=2.8.\*
+
+rm /etc/haproxy/haproxy.cfg
+cp /etc/haproxy/haproxy.cfg_backup /etc/haproxy/haproxy.cfg
+# backup the config file
+backup_file="/etc/haproxy/haproxy.cfg_backup"
+if [ ! -f "$backup_file" ]; then
+    cp /etc/haproxy/haproxy.cfg "$backup_file"
+    echo "Backup created"
+else
+    echo "Backup file exist"
+fi
+
+echo "ENABLED=1" | sudo dd status=none of=/etc/default/haproxy
+
+# sed -i "s/ENABLED=0/ENABLED=1/" /etc/default/haproxy
+
+frontend="frontend myfrontend \n\tbind *:80\n\tmode http\n\tdefault_backend  mybackend"
+sed -i "/$frontend/d"   /etc/haproxy/haproxy.cfg
+echo -e "$frontend" >>  /etc/haproxy/haproxy.cfg
+
+mybackend="backend mybackend \n\tbalance roundrobin \n\tmode http\n\tserver 339509-web-01  54.146.76.231:80 check \n\tserver 339509-web-02  54.90.29.10:80 check"
+sed -i "/$mybackend/d"   /etc/haproxy/haproxy.cfg
+echo -e "$mybackend" >>  /etc/haproxy/haproxy.cfg
+
+systemctl enable haproxy
 service haproxy restart
