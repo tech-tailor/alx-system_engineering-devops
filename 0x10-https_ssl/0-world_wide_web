@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+# this script display info about subdomains
+
+display_subdomain() {
+    local domain="$1"
+    local subdomain="$2"
+
+    # default subdomain if none is provided
+    local default_subdomain=("www" "lb-01" "web-01" "web-02")
+
+    for sub in "${default_subdomain[@]}"; do
+	if [ -z "$subdomain" ] || [ "$sub" == "$subdomain" ]; then
+	    # use dig and awk to get info
+	    ip_addr=$(dig +noall +answer "$sub"."$domain" | awk '{ print $5 }')
+	    record_type=$(dig +noall +answer "$sub"."$domain" | awk '{ print $4 }')
+	    # echo "$record_type"
+	    echo "The subdomain $sub is a $record_type record and points to $ip_addr"
+	    
+	fi
+    done
+}
+
+# check if domain is provided
+if [ -z "$1" ]; then
+    echo "Error: Missing domain"
+    echo " "
+    exit 1
+fi
+
+# set the domain variable
+domain="$1"
+subdomain="$2"
+
+# call the function
+display_subdomain "$domain" "$subdomain"
