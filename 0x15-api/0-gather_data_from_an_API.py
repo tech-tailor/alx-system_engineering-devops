@@ -10,7 +10,7 @@ def get_username(base_url, id):
     url = "{}/users/{}".format(base_url, id)
     response = requests.get(url)
     user_dict = response.json()
-    get_name = user_dict.get('name')
+    get_name = user_dict.get('name').strip()
     return get_name
 
 
@@ -27,7 +27,7 @@ def get_task(base_url, user_id):
             total_task += 1
             if task.get("completed") is True:
                 completed_task += 1
-                task_title = task.get("title")
+                task_title = task.get("title").strip()
                 completed_task_title.append(task_title)
     return total_task, completed_task, completed_task_title
 
